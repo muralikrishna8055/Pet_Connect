@@ -207,7 +207,7 @@ $result = $connection->query($sql);
                           echo '</tr>';
                       }
                   } else {
-                      echo '<tr><td colspan="6" class="text-center">No products found.</td></tr>';
+                      echo '<tr><td colspan="6" class="text-center">No Adoption Post found.</td></tr>';
                   }
                   ?>
                 </tbody>

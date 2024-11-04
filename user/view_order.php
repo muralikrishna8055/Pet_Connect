@@ -151,7 +151,7 @@ $connection->close();
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>View Cart</h1>
+      <h1>View Order</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -177,6 +177,8 @@ $connection->close();
                     <th scope="col">Quantity</th>
                     <th scope="col">Total Price ($)</th>
                     <th scope="col">Order Date</th>
+                    <th scope="col">Status</th>
+
                    <!-- <th scope="col">Product ID</th>-->
                   </tr>
                 </thead>
@@ -189,12 +191,13 @@ $connection->close();
                           echo '    <td>' . htmlspecialchars($product["quantity"]) . '</td>';
                           echo '    <td>$' . htmlspecialchars(number_format($product["total_price"], 2)) . '</td>';
                           echo '    <td>' . htmlspecialchars($product["order_date"]) . '</td>';
+                          echo '    <td> Pending </td>';
                           
                         //  echo '    <td>' . htmlspecialchars($product["product_id"]) . '</td>';
                           echo '</tr>';
                       }
                   } else {
-                      echo '<tr><td colspan="5" class="text-center">Your Cart is Empty</td></tr>';
+                      echo '<tr><td colspan="5" class="text-center">Your Order is Empty</td></tr>';
                   }
                   ?>
                 </tbody>

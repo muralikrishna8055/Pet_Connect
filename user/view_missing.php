@@ -143,19 +143,7 @@ $result = $connection->query($sql);
     </ul>
   </li>
 
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="users-profile.php">
-      <i class="bi bi-person"></i>
-      <span>Profile</span>
-    </a>
-  </li><!-- End Profile Page Nav -->
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="pages-faq.php">
-      <i class="bi bi-question-circle"></i>
-      <span>F.A.Q</span>
-    </a>
-  </li><!-- End F.A.Q Page Nav -->
+  
 
 </ul>
 
@@ -165,7 +153,7 @@ $result = $connection->query($sql);
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>View Adoption</h1>
+      <h1>View Missing</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -216,7 +204,7 @@ $result = $connection->query($sql);
                           echo '</tr>';
                       }
                   } else {
-                      echo '<tr><td colspan="6" class="text-center">No products found.</td></tr>';
+                      echo '<tr><td colspan="6" class="text-center">No Missing post found.</td></tr>';
                   }
                   ?>
                 </tbody>
