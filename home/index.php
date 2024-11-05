@@ -50,13 +50,12 @@ session_start();
                 <a href="product.php" class="nav-item nav-link">Shop</a>
                 <a href="adoption.php" class="nav-item nav-link">Adoption</a>
                 <a href="lostpet.php" class="nav-item nav-link">Missing</a>
+                <a href="emergency_vet.php" class="nav-item nav-link">Clinics</a>
                
 
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Features</a>
                     <div class="dropdown-menu m-0">
-                        <a href="appionment.php" class="dropdown-item">Appionment</a>
-                        <a href="emergency_vet.php" class="dropdown-item">Emergency Vets</a>
                         <a href="faq.php" class="dropdown-item">Frequently asked questions</a>
                         <a href="resources.php" class="dropdown-item">Resources</a>
                         <a href="blog.php" class="dropdown-item">Blog</a>

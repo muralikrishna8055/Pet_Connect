@@ -87,13 +87,12 @@ if (isset($_POST['id'])) {
                 <a href="product.php" class="nav-item nav-link">Shop</a>
                 <a href="adoption.php" class="nav-item nav-link">Adoption</a>
                 <a href="lostpet.php" class="nav-item nav-link">Missing</a>
+                <a href="emergency_vet.php" class="nav-item nav-link">Clinics</a>
                
 
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Features</a>
                     <div class="dropdown-menu m-0">
-                        <a href="appionment.php" class="dropdown-item">Appionment</a>
-                        <a href="emergency_vet.php" class="dropdown-item">Emergency Vets</a>
                         <a href="faq.php" class="dropdown-item">Frequently asked questions</a>
                         <a href="resources.php" class="dropdown-item">Resources</a>
                         <a href="blog.php" class="dropdown-item">Blog</a>
@@ -150,8 +149,8 @@ if (isset($_POST['id'])) {
 
                     <!-- Action Buttons -->
                     <div class="d-flex mb-4">
-                        <a href="appionment.html" class="btn btn-primary py-3 px-5 me-3">Get Appointment</a>
-                        <a href="chat.html" class="btn btn-outline-primary py-3 px-5">Chat</a>
+                        <a href="appionment.php" class="btn btn-primary py-3 px-5 me-3">Get Appointment</a>
+                        
                     </div>
                 </div>
             </div>
