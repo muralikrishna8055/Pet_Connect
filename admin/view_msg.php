@@ -10,11 +10,40 @@ if (!isset($_SESSION['admin'])) {
 
 <?php
 include('db_con.php'); 
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // Query to fetch financial advisors
-$sql = "SELECT id, image, name, price, description, category FROM product";
+$sql = "SELECT id, email,subject,message,timestamp FROM user_messages";
 $result = $connection->query($sql);
+
+// Check if delete button was clicked
+if (isset($_POST['delete'])) {
+    // Get the ID of the message to delete
+    $id = $_POST['delete'];
+
+    // Create the SQL DELETE statement
+    $delete_sql = "DELETE FROM user_messages WHERE id = ?";
+    
+    // Prepare and execute the statement
+    if ($stmt = $connection->prepare($delete_sql)) {
+        $stmt->bind_param("i", $id);  // "i" indicates the parameter is an integer
+        if ($stmt->execute()) {
+            echo '<script>alert("Messages deleted successfully!");</script>';
+            echo '<script>location.replace("view_msg.php");</script>'; // Redirect
+        } else {
+            echo "<p>Error deleting message: " . $stmt->error . "</p>";
+        }
+        $stmt->close();
+    } else {
+        echo "<p>Preparation error: " . $conn->error . "</p>";
+    }
+}
 ?>
+
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -203,16 +232,15 @@ $result = $connection->query($sql);
 </aside><!-- End Sidebar-->
 
 
-
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>View Products</h1>
+      <h1>View Messages</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Products</li>
-          <li class="breadcrumb-item active">View Products</li>
+          <li class="breadcrumb-item">Messages</li>
+          <li class="breadcrumb-item active">View Messages</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -223,19 +251,17 @@ $result = $connection->query($sql);
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Product List</h5>
+              <h5 class="card-title">Messages</h5>
 
               <!-- Products Table -->
               <table class="table table-striped ">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Product Image</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Price ($)</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">User Email</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Messages</th>
+                    <th scope="col">Timestamp</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -244,15 +270,12 @@ $result = $connection->query($sql);
                       while ($row = $result->fetch_assoc()) {
                           echo '<tr>';
                           echo '    <th scope="row">' . htmlspecialchars($row["id"]) . '</th>';
-                          echo '    <td><img src="../admin/uploads/product/' . htmlspecialchars($row["image"]) . '" alt="' . htmlspecialchars($row["name"]) . '" class="img-thumbnail" style="width: 100px;"></td>';
-                          echo '    <td>' . htmlspecialchars($row["name"]) . '</td>';
-                          echo '    <td>' . htmlspecialchars($row["category"]) . '</td>';
-                          echo '    <td>$' . htmlspecialchars(number_format($row["price"], 2)) . '</td>';
-                          echo '    <td>' . htmlspecialchars($row["description"]) . '</td>';
-                          echo '  <td>                                  
-                                    
-                                    <form action="del_prod.php" method="POST">
-                                       <button type="submit"   name="id" class="btn btn-sm btn-danger" value="' . htmlspecialchars($row['id']) . '"><i class="bi bi-trash"></i> Delete</button>
+                           echo '    <td>' . htmlspecialchars($row["email"]) . '</td>';
+                          echo '    <td>' . htmlspecialchars($row["subject"]) . '</td>';
+                          echo '    <td>' . htmlspecialchars($row["timestamp"]) . '</td>';
+                          echo '  <td>                                   
+                                    <form action="" method="POST">
+                                       <button type="submit"   name="delete" class="btn btn-sm btn-danger" value="' . htmlspecialchars($row['id']) . '"><i class="bi bi-trash"></i> Delete</button>
                                     </form> 
 
                                   </td>'; 
@@ -260,7 +283,7 @@ $result = $connection->query($sql);
                           echo '</tr>';
                       }
                   } else {
-                      echo '<tr><td colspan="6" class="text-center">No products found.</td></tr>';
+                      echo '<tr><td colspan="6" class="text-center">No messages found.</td></tr>';
                   }
                   ?>
                 </tbody>

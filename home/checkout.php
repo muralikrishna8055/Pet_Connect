@@ -117,7 +117,7 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="col-md-2">
                             <label for="zip" class="form-label">Zip</label>
-                            <input type="text" name="pincode" class="form-control" value="<?php echo $pincode;?>" id="zip" placeholder="10001" required>
+                            <input type="tel" pattern="[0-9]{6}" name="pincode" class="form-control" value="<?php echo $pincode;?>" id="zip" placeholder="10001" required>
                         </div>
                         <div class="col-12">
                             <label for="email" class="form-label">Email Address</label>
@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="col-12">
                             <label for="phone" class="form-label">Phone Number</label>
-                            <input type="tel" name="phone" class="form-control" id="phone" value="<?php echo $number;?>" placeholder="+1 234 567 8901" required>
+                            <input type="tel" pattern="[0-9]{10}" name="phone" class="form-control" id="phone" value="<?php echo $number;?>" placeholder="+1 234 567 8901" required>
                         </div>
                     </div>
                

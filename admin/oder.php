@@ -7,13 +7,47 @@ if (!isset($_SESSION['admin'])) {
 }
 ?>
 
-
 <?php
-include('db_con.php'); 
+session_start(); // Start the session
+include('db_con.php'); // Include the database connection
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+// Prepare the SQL statement to prevent SQL injection
+$sql = "SELECT product_name,id, total_price, order_date, quantity, product_id,fullname,state,address,zip,phone,status FROM orders ";
+$stmt = $connection->prepare($sql);
+$stmt->execute();
+$product_result = $stmt->get_result();
 
-// Query to fetch financial advisors
-$sql = "SELECT id, image, name, price, description, category FROM product";
-$result = $connection->query($sql);
+// Close the statement and connection
+$stmt->close();
+
+
+
+// Check if form was submitted and an ID is provided
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
+    // Sanitize and fetch the order ID from the form
+    $orderId = intval($_POST['id']);
+    
+    // Update the order's status to "Shipped" in the database
+    $updateQuery = "UPDATE orders SET status = 'Shipped' WHERE id = ?";
+    $stmt = $connection->prepare($updateQuery);
+    $stmt->bind_param("i", $orderId);
+    
+    // Execute and check if the update was successful
+    if ($stmt->execute()) {
+        echo '<script>alert("Updated successfully!");</script>';
+            echo '<script>location.replace("oder.php");</script>'; // Redirect
+    } else {
+        echo "<p class='alert alert-danger'>Error updating order status. Please try again.</p>";
+        echo '<script>location.replace("oder.php");</script>'; // Redirect
+    }
+    $stmt->close();
+}
+
+
+
+
+$connection->close();
 ?>
 
 <!DOCTYPE html>
@@ -65,9 +99,8 @@ $result = $connection->query($sql);
 
   </header><!-- End Header -->
 
-   
-   <!-- ======= Sidebar ======= -->
-   <aside id="sidebar" class="sidebar">
+    <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
 
 <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -207,12 +240,12 @@ $result = $connection->query($sql);
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>View Products</h1>
+      <h1>View Order</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Products</li>
-          <li class="breadcrumb-item active">View Products</li>
+          <li class="breadcrumb-item">Orders</li>
+          <li class="breadcrumb-item active">View Order</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -223,48 +256,56 @@ $result = $connection->query($sql);
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Product List</h5>
+              <h5 class="card-title">order</h5>
 
-              <!-- Products Table -->
-              <table class="table table-striped ">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Product Image</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Price ($)</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  if ($result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                          echo '<tr>';
-                          echo '    <th scope="row">' . htmlspecialchars($row["id"]) . '</th>';
-                          echo '    <td><img src="../admin/uploads/product/' . htmlspecialchars($row["image"]) . '" alt="' . htmlspecialchars($row["name"]) . '" class="img-thumbnail" style="width: 100px;"></td>';
-                          echo '    <td>' . htmlspecialchars($row["name"]) . '</td>';
-                          echo '    <td>' . htmlspecialchars($row["category"]) . '</td>';
-                          echo '    <td>$' . htmlspecialchars(number_format($row["price"], 2)) . '</td>';
-                          echo '    <td>' . htmlspecialchars($row["description"]) . '</td>';
-                          echo '  <td>                                  
-                                    
-                                    <form action="del_prod.php" method="POST">
-                                       <button type="submit"   name="id" class="btn btn-sm btn-danger" value="' . htmlspecialchars($row['id']) . '"><i class="bi bi-trash"></i> Delete</button>
-                                    </form> 
+            <!-- Products Table -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Price ($)</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Action</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($product_result->num_rows > 0) {
+            while ($product = $product_result->fetch_assoc()) {
+                echo '<tr>';
+                echo '    <td>' . htmlspecialchars($product["product_name"]) . '</td>';
+                echo '    <td>' . htmlspecialchars($product["quantity"]) . '</td>';
+                echo '    <td>$' . htmlspecialchars(number_format($product["total_price"], 2)) . '</td>';
+                echo '    <td>' . htmlspecialchars($product["order_date"]) . '</td>';
+                echo '    <td>' . htmlspecialchars($product["fullname"]) . '</td>';
+                echo '    <td>' . htmlspecialchars($product["address"]) . '</td>';
+                echo '    <td>' . htmlspecialchars($product["phone"]) . '</td>';
 
-                                  </td>'; 
-
-                          echo '</tr>';
-                      }
-                  } else {
-                      echo '<tr><td colspan="6" class="text-center">No products found.</td></tr>';
-                  }
-                  ?>
-                </tbody>
-              </table>
+                // Display the "Shipped" button if the order status is not already "Shipped"
+                echo '    <td>';
+                if ($product["status"] != "Shipped") {
+                    echo '<form action="" method="POST">
+                              <button type="submit" name="id" class="btn btn-sm btn-success" value="' . htmlspecialchars($product['id']) . '">
+                                  <i class="bi bi-pencil-square"></i> Shipped
+                              </button>
+                          </form>';
+                } else {
+                    echo 'Shipped';
+                }
+                echo '    </td>';
+                echo '</tr>';
+            }
+        } else {
+            echo '<tr><td colspan="9" class="text-center">Your Order is Empty</td></tr>';
+        }
+        ?>
+    </tbody>
+</table>
 
             </div>
           </div>
@@ -303,3 +344,7 @@ $result = $connection->query($sql);
 </body>
 
 </html>
+
+
+
+

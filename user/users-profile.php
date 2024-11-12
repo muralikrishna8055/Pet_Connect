@@ -109,10 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
-            </li>
+            
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -152,99 +149,104 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   </header><!-- End Header -->
 
- <!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
 
-<ul class="sidebar-nav" id="sidebar-nav">
+    <ul class="sidebar-nav" id="sidebar-nav">
 
-  <li class="nav-item">
-    <a class="nav-link " href="../home/index.php">
-      <i class="bi bi-grid"></i>
-      <span>HOME</span>
-    </a>
-  </li><!-- End Dashboard Nav -->
+      <li class="nav-item">
+        <a class="nav-link " href="../home/index.php">
+          <i class="bi bi-grid"></i>
+          <span>HOME</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
 
-  <li class="nav-item">
-    <a class="nav-link " href="index.php">
-      <i class="bi bi-grid"></i>
-      <span>Dashboard</span>
-    </a>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="View_order.php">
-      <i class="bi bi-menu-button-wide"></i><span>ORDERS</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="view_order.php">
-          <i class="bi bi-circle"></i><span>MY ORDERS</span>
+      <li class="nav-item">
+        <a class="nav-link " href="index.php">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
         </a>
       </li>
-      <li>
-        <a href="view_Cart.php">
-          <i class="bi bi-circle"></i><span>CART</span>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="View_order.php">
+          <i class="bi bi-menu-button-wide"></i><span>ORDERS</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="view_order.php">
+              <i class="bi bi-circle"></i><span>MY ORDERS</span>
+            </a>
+          </li>
+          <li>
+            <a href="view_Cart.php">
+              <i class="bi bi-circle"></i><span>CART</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#missing-pets-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>MISSING PETS</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="missing-pets-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="add_missPet.php">
+              <i class="bi bi-circle"></i><span>ADD MISSING PETS</span>
+            </a>
+          </li>
+          <li>
+            <a href="view_missing.php">
+              <i class="bi bi-circle"></i><span>VIEW MISSING POST</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#adoption-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>ADOPTION</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="adoption-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="add_adopt.php">
+              <i class="bi bi-circle"></i><span>ADD ADOPTION</span>
+            </a>
+          </li>
+          <li>
+            <a href="view_adopt.php">
+              <i class="bi bi-circle"></i><span>VIEW ADOPTIONS</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="view_appoinment.php">
+          <i class="bi bi-person"></i>
+          <span>Appoinments</span>
         </a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="users-profile.php">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-faq.php">
+          <i class="bi bi-question-circle"></i>
+          <span>F.A.Q</span>
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
     </ul>
-  </li>
 
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#missing-pets-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>MISSING PETS</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="missing-pets-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="add_missPet.php">
-          <i class="bi bi-circle"></i><span>ADD MISSING PETS</span>
-        </a>
-      </li>
-      <li>
-        <a href="view_missing.php">
-          <i class="bi bi-circle"></i><span>VIEW MISSING POST</span>
-        </a>
-      </li>
-    </ul>
-  </li>
+  </aside><!-- End Sidebar -->
 
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#adoption-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>ADOPTION</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="adoption-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="add_adopt.php">
-          <i class="bi bi-circle"></i><span>ADD ADOPTION</span>
-        </a>
-      </li>
-      <li>
-        <a href="view_adopt.php">
-          <i class="bi bi-circle"></i><span>VIEW ADOPTIONS</span>
-        </a>
-      </li>
-    </ul>
-  </li>
-
-
-
-    
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="users-profile.php">
-        <i class="bi bi-person"></i>
-        <span>Profile</span>
-      </a>
-    </li><!-- End Profile Page Nav -->
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="pages-faq.php">
-        <i class="bi bi-question-circle"></i>
-        <span>F.A.Q</span>
-      </a>
-    </li><!-- End F.A.Q Page Nav -->
-    
-  </ul>
-
-</aside><!-- End Sidebar-->
   <main id="main" class="main">
 
     <div class="pagetitle">

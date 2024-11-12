@@ -157,7 +157,7 @@ if (isset($_POST['login'])) { // Change to 'login' from 'submit'
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    <input type="password" minlength="8" class="form-control" id="password" name="password" placeholder="Enter your password" required>
                 </div>
                 <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
                 <p class="text-center mt-3">Don't have an account? <a href="usr_Reg.php">Sign up here</a></p>

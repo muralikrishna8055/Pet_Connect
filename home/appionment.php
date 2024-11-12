@@ -2,7 +2,73 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start(); // Start the session if not already started
 }
+include('db_con.php'); 
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Check if the user is logged in
+if (!isset($_SESSION['usr'])) {
+    echo '<script>location.replace("doctors.php");</script>';
+    exit();
+}
+// Check if 'id' is set in the GET request
+if (isset($_POST['doc'])) {
+    $doc = $_POST['doc'];
+   //echo $doc;
+}
+else{
+    echo '<script>location.replace("doctors.php");</script>';
+}
+
+
+// Check if the form was submitted
+if (isset($_POST['submit'])) {
+    // Ensure all required fields are set and not empty
+    $doctor_id = isset($_POST['doctor_id']) ? htmlspecialchars($_POST['doctor_id']) : null;
+    $user_id = isset($_POST['user_id']) ? htmlspecialchars($_POST['user_id']) : null;
+    $pet_name = isset($_POST['petName']) ? htmlspecialchars($_POST['petName']) : null;
+    $pet_type = isset($_POST['petType']) ? htmlspecialchars($_POST['petType']) : null;
+    $appointment_date = isset($_POST['appointmentDate']) ? htmlspecialchars($_POST['appointmentDate']) : null;
+    $appointment_time = isset($_POST['appointmentTime']) ? htmlspecialchars($_POST['appointmentTime']) : null;
+    $message = isset($_POST['message']) ? htmlspecialchars($_POST['message']) : null;
+
+    // Check if any required fields are empty
+    if (empty($doctor_id) || empty($user_id) || empty($pet_name) || empty($pet_type) || empty($appointment_date) || empty($appointment_time)) {
+        echo "<p class='alert alert-danger'>Please fill in all required fields.</p>";
+    } else {
+        // Prepare the SQL insert statement
+        $sql = "INSERT INTO appointments (doctor_id, user_id, pet_name, pet_type, appointment_date, appointment_time, message) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        // Prepare the statement and bind parameters to avoid SQL injection
+        if ($stmt = $connection->prepare($sql)) {
+            $stmt->bind_param("sssssss", $doctor_id, $user_id, $pet_name, $pet_type, $appointment_date, $appointment_time, $message);
+
+
+            // Execute the statement and check for success
+            if ($stmt->execute()) {
+               // echo "<p class='alert alert-success'>Appointment submitted successfully!</p>";
+                echo '<script>alert("Appointment submitted successfully!");</script>';
+                echo '<script>location.replace("doctors.php");</script>'; // Redirect
+            } else {
+                echo "<p class='alert alert-danger'>Error: " . $stmt->error . "</p>";
+                echo '<script>location.replace("doctors.php");</script>'; // Redirect
+            }
+
+            // Close the statement
+            $stmt->close();
+        } else {
+            echo "<p class='alert alert-danger'>Error preparing the statement.</p>";
+        }
+    }
+}
 ?>
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +126,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         
                         <a href="faq.php" class="dropdown-item">Frequently asked questions</a>
                         <a href="resources.php" class="dropdown-item">Resources</a>
-                        <a href="blog.php" class="dropdown-item">Blog</a>
+                       
                         <a href="terms.php" class="dropdown-item">Terms and Conditions</a>
                     </div>
                 </div>
@@ -76,7 +142,8 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         </div>
     </nav>
-    <!-- Navbar End -->
+    <!-- Navbar End     <input  class="form-control" id="phone" name="phone"type="tel" pattern="[0-9]{10}" placeholder="e.g., 1234567890" required>
+               -->      
 
     <!-- Appointment Scheduling Start -->
     <div class="container my-5">
@@ -84,19 +151,11 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card p-4">
-                    <form action="submit-appointment.html" method="post">
-                        <div class="mb-3">
-                            <label for="fullName" class="form-label">Full Name<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="fullName" name="fullName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address<span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number<span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" placeholder="e.g., 1234567890" required>
-                        </div>
+                    <form action="" method="post">
+                        
+                            <input type="hidden" value="<?php echo $doc ?>"  name="doctor_id" required>
+                            <input type="hidden" value="<?php echo $_SESSION['usr']?>"   name="user_id" required>
+        
                         <div class="mb-3">
                             <label for="petName" class="form-label">Pet's Name<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="petName" name="petName" required>
@@ -119,33 +178,17 @@ if (session_status() === PHP_SESSION_NONE) {
                             <label for="appointmentTime" class="form-label">Preferred Time<span class="text-danger">*</span></label>
                             <input type="time" class="form-control" id="appointmentTime" name="appointmentTime" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="veterinarian" class="form-label">Select Veterinarian<span class="text-danger">*</span></label>
-                            <select class="form-select" id="veterinarian" name="veterinarian" required>
-                                <option value="">Select Veterinarian</option>
-                                <option value="Dr. Emily Carter">Dr. Emily Carter</option>
-                                <option value="Dr. Noah Smith">Dr. Noah Smith</option>
-                                <option value="Dr. Olivia Brown">Dr. Olivia Brown</option>
-                                <option value="Dr. Ava Johnson">Dr. Ava Johnson</option>
-                                <option value="Dr. Lucas Williams">Dr. Lucas Williams</option>
-                                <option value="Dr. Mia Davis">Dr. Mia Davis</option>
-                            </select>
-                        </div>
+                        
                         <div class="mb-3">
                             <label for="message" class="form-label">Additional Information or Special Requests</label>
                             <textarea class="form-control" id="message" name="message" rows="3" placeholder="e.g., Your pet has anxiety during visits."></textarea>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Submit Appointment</button>
+                            <button type="submit" name="submit"  class="btn btn-primary">Submit Appointment</button>
                         </div>
                     </form>
                 </div>
-                <!-- Success Message (Optional) -->
-                <!-- 
-                <div class="alert alert-success mt-3" role="alert">
-                    Your appointment has been successfully scheduled! We will contact you shortly with confirmation details.
-                </div>
-                -->
+                
             </div>
         </div>
     </div>

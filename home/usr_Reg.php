@@ -147,11 +147,11 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                        <input type="password" minlength="8" class="form-control" id="password" name="password" placeholder="Enter your password" required>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
+                        <input type="tel" pattern="[0-9]{10}" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
                     </div>
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
@@ -163,12 +163,12 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="mb-3">
                         <label for="pincode" class="form-label">Pincode</label>
-                        <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter your pincode" required>
+                        <input type="tel" pattern="[0-9]{6}" class="form-control" id="pincode" name="pincode" placeholder="Enter your pincode" required>
                     </div>
                     <div class="mb-3">
-                        <label for="state" class="form-label">State</label>
+                        <label for="state" class="form-label">District</label>
                         <select class="form-select" id="state" name="state" required>
-                            <option value="">Select your state</option>
+                            <option value="">Select your District</option>
                             <option value="Alappuzha">Alappuzha</option>
                             <option value="Ernakulam">Ernakulam</option>
                             <option value="Idukki">Idukki</option>

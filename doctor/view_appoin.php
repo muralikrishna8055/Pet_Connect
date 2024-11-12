@@ -1,25 +1,52 @@
 <?php
 session_start(); // Start the session
 include('db_con.php'); // Include the database connection
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // Check if the user is logged in
-if (!isset($_SESSION['usr'])) {
+if (!isset($_SESSION['doctor_id'])) {
     echo '<script>location.replace("index.php");</script>'; // Redirect to login page
     exit();
 }
 
 // Get the user ID from the session
-$user_id = $_SESSION['usr'];
+$doc_id = $_SESSION['doctor_id'];
 
 // Prepare the SQL statement to prevent SQL injection
-$sql = "SELECT product_name, total_price, order_date, quantity, product_id,status FROM orders WHERE email = ?";
+$sql = "SELECT id,user_id,appointment_date,appointment_time ,status FROM appointments WHERE user_id = ?";
 $stmt = $connection->prepare($sql);
-$stmt->bind_param("s", $user_id);
+$stmt->bind_param("s", $doc_id);
 $stmt->execute();
 $product_result = $stmt->get_result();
 
 // Close the statement and connection
 $stmt->close();
+
+
+// Check if form was submitted and an ID is provided
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
+    // Sanitize and fetch the order ID from the form
+    $Id = intval($_POST['id']);
+    
+    // Update the order's status to "Shipped" in the database
+    $updateQuery = "UPDATE appointments SET status = 'Approved' WHERE id = ?";
+    $stmt = $connection->prepare($updateQuery);
+    $stmt->bind_param("i", $Id);
+    
+    // Execute and check if the update was successful
+    if ($stmt->execute()) {
+        echo '<script>alert("Updated successfully!");</script>';
+            echo '<script>location.replace("view_appoin.php");</script>'; // Redirect
+    } else {
+        echo "<p class='alert alert-danger'>Error updating order status. Please try again.</p>";
+        echo '<script>location.replace("view_appoin.php");</script>'; // Redirect
+    }
+    $stmt->close();
+}
+
+
+
+
 $connection->close();
 ?>
 
@@ -30,7 +57,7 @@ $connection->close();
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>PetConnect | View Products</title>
+  <title>PetConnect </title>
   <meta content="View, update, and delete products in PetConnect's inventory." name="description">
   <meta content="PetConnect, Admin, View Products, Dashboard" name="keywords">
 
@@ -58,99 +85,81 @@ $connection->close();
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
-    <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">PetConnect </span>
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
+   <!-- ======= Header ======= -->
+   <header id="header" class="header fixed-top d-flex align-items-center">
 
-    <!-- Existing Header Content (Search Bar, Notifications, Messages, Profile) -->
+<div class="d-flex align-items-center justify-content-between">
+  <a href="index.html" class="logo d-flex align-items-center">
+    <img src="assets/img/logo.png" alt="">
+    <span class="d-none d-lg-block">DOCTOR</span>
+  </a>
+  <i class="bi bi-list toggle-sidebar-btn"></i>
+</div><!-- End Logo -->
 
-  </header><!-- End Header -->
+<nav class="header-nav ms-auto">
+  <ul class="d-flex align-items-center">
+    <li class="nav-item dropdown pe-3">
+
+      <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+        <img src="" alt="" class="rounded-circle">
+        <span class="d-none d-md-block dropdown-toggle ps-2">LOGOUT</span>
+      </a><!-- End Profile Image Icon -->
+
+      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center" href="users-profile.php">
+            <i class="bi bi-person"></i>
+            <span>My Profile</span>
+          </a>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center" href="logout.php">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Sign Out</span>
+          </a>
+        </li>
+      </ul><!-- End Profile Dropdown Items -->
+    </li><!-- End Profile Nav -->
+
+  </ul>
+</nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+
  <!-- ======= Sidebar ======= -->
  <aside id="sidebar" class="sidebar">
 
 <ul class="sidebar-nav" id="sidebar-nav">
 
   <li class="nav-item">
-    <a class="nav-link " href="../home/index.php">
-      <i class="bi bi-grid"></i>
-      <span>HOME</span>
-    </a>
-  </li><!-- End Dashboard Nav -->
-
-  <li class="nav-item">
     <a class="nav-link " href="index.php">
       <i class="bi bi-grid"></i>
       <span>Dashboard</span>
     </a>
-  </li>
+  </li><!-- End Dashboard Nav -->
+
+
 
   <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="View_order.php">
-      <i class="bi bi-menu-button-wide"></i><span>ORDERS</span><i class="bi bi-chevron-down ms-auto"></i>
+    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-menu-button-wide"></i><span>APPOINMENTS</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
       <li>
-        <a href="view_order.php">
-          <i class="bi bi-circle"></i><span>MY ORDERS</span>
+        <a href="view_appoin.php">VIEW APPOINMENTS
+          <i class="bi bi-circle"></i><span></span>
         </a>
-      </li>
-      <li>
-        <a href="view_Cart.php">
-          <i class="bi bi-circle"></i><span>CART</span>
-        </a>
-      </li>
-    </ul>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#missing-pets-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>MISSING PETS</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="missing-pets-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="add_missPet.php">
-          <i class="bi bi-circle"></i><span>ADD MISSING PETS</span>
-        </a>
-      </li>
-      <li>
-        <a href="view_missing.php">
-          <i class="bi bi-circle"></i><span>VIEW MISSING POST</span>
-        </a>
-      </li>
-    </ul>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#adoption-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>ADOPTION</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="adoption-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="add_adopt.php">
-          <i class="bi bi-circle"></i><span>ADD ADOPTION</span>
-        </a>
-      </li>
-      <li>
-        <a href="view_adopt.php">
-          <i class="bi bi-circle"></i><span>VIEW ADOPTIONS</span>
-        </a>
-      </li>
+      </li>                        
+     
     </ul>
   </li>
   
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="view_appoinment.php">
-      <i class="bi bi-person"></i>
-      <span>Appoinments</span>
-    </a>
-  </li>
-
   <li class="nav-item">
     <a class="nav-link collapsed" href="users-profile.php">
       <i class="bi bi-person"></i>
@@ -164,10 +173,10 @@ $connection->close();
       <span>F.A.Q</span>
     </a>
   </li><!-- End F.A.Q Page Nav -->
-
+  
 </ul>
 
-</aside><!-- End Sidebar -->
+</aside><!-- End Sidebar-->
 
 
   <main id="main" class="main">
@@ -177,8 +186,8 @@ $connection->close();
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Orders</li>
-          <li class="breadcrumb-item active">View Order</li>
+          <li class="breadcrumb-item">Appoinments</li>
+          <li class="breadcrumb-item active">View Appoinments</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -195,11 +204,10 @@ $connection->close();
               <table class="table table-striped ">
                 <thead>
                 <tr>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total Price ($)</th>
-                    <th scope="col">Order Date</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">User Email</th>
+                    <th scope="col">Appoinment Date</th>
+                    <th scope="col">Appoinment Time</th>
+                    <th scope="col">APPROVE</th>
 
                    <!-- <th scope="col">Product ID</th>-->
                   </tr>
@@ -209,17 +217,26 @@ $connection->close();
                   if ($product_result->num_rows > 0) {
                       while ($product = $product_result->fetch_assoc()) {
                           echo '<tr>';
-                          echo '    <td>' . htmlspecialchars($product["product_name"]) . '</td>';
-                          echo '    <td>' . htmlspecialchars($product["quantity"]) . '</td>';
-                          echo '    <td>$' . htmlspecialchars(number_format($product["total_price"], 2)) . '</td>';
-                          echo '    <td>' . htmlspecialchars($product["order_date"]) . '</td>';
-                          echo '    <td>' . htmlspecialchars($product["status"]) . '</td>';
-                          
-                        //  echo '    <td>' . htmlspecialchars($product["product_id"]) . '</td>';
-                          echo '</tr>';
-                      }
-                  } else {
-                      echo '<tr><td colspan="5" class="text-center">Your Order is Empty</td></tr>';
+                          echo '    <td>' . htmlspecialchars($product["user_id"]) . '</td>';
+                          echo '    <td>' . htmlspecialchars($product["appointment_date"]) . '</td>';
+                          echo '    <td>' . $product["appointment_time"] . '</td>';
+                          // Display the "Shipped" button if the order status is not already "Shipped"
+                echo '    <td>';
+                     if ($product["status"] == "Pending") {
+                            echo '<form action="" method="POST">
+                                    <button type="submit" name="id" class="btn btn-sm btn-success" value="' . htmlspecialchars($product['id']) . '">
+                                     <i class="bi bi-pencil-square"></i> Approve
+                                   </button>
+                                </form>';
+                    } else {
+                           echo 'Approved';
+                           }
+                  echo '    </td>';
+             echo '</tr>';
+            }
+        } 
+                             else {
+                      echo '<tr><td colspan="5" class="text-center">No Appoinments</td></tr>';
                   }
                   ?>
                 </tbody>

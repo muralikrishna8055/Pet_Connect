@@ -48,7 +48,7 @@ if (isset($_POST['submit'])) {
 
                     if ($query_run) {
                         echo '<script>alert("Doctor successfully registered.");</script>';
-                        echo '<script>location.replace("index.php");</script>'; // Redirect to doctor list page after success
+                        echo '<script>location.replace("login.php");</script>'; // Redirect to doctor list page after success
                     } else {
                         echo '<script>alert("Failed to save data to the database.");</script>';
                     }
@@ -146,7 +146,7 @@ if (isset($_POST['submit'])) {
 
     <div class="col-12">
         <label for="yourPassword" class="form-label">Password</label>
-        <input type="password" name="password" class="form-control" id="yourPassword" required>
+        <input type="password" name="password" minlength="8" class="form-control" id="yourPassword" required>
         <div class="invalid-feedback">Please enter your password!</div>
     </div>
 
@@ -164,7 +164,7 @@ if (isset($_POST['submit'])) {
 
     <div class="col-12">
         <label for="contactNumber" class="form-label">Contact Number</label>
-        <input type="text" name="contact_number" class="form-control" id="contactNumber" required>
+        <input type="tel" pattern="[0-9]{10}" name="contact_number" class="form-control" id="contactNumber" required>
         <div class="invalid-feedback">Please enter a valid contact number!</div>
     </div>
 
@@ -174,7 +174,7 @@ if (isset($_POST['submit'])) {
     </div>
 
     <div class="col-12">
-        <p class="small mb-0">Already have an account? <a href="">Log in</a></p>
+        <p class="small mb-0">Already have an account? <a href="login.php">Log in</a></p>
     </div>
 </form>
 

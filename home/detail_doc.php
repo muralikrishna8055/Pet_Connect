@@ -95,7 +95,7 @@ if (isset($_POST['id'])) {
                     <div class="dropdown-menu m-0">
                         <a href="faq.php" class="dropdown-item">Frequently asked questions</a>
                         <a href="resources.php" class="dropdown-item">Resources</a>
-                        <a href="blog.php" class="dropdown-item">Blog</a>
+                        
                         <a href="terms.php" class="dropdown-item">Terms and Conditions</a>
                     </div>
                 </div>
@@ -149,8 +149,10 @@ if (isset($_POST['id'])) {
 
                     <!-- Action Buttons -->
                     <div class="d-flex mb-4">
-                        <a href="appionment.php" class="btn btn-primary py-3 px-5 me-3">Get Appointment</a>
-                        
+                        <form action="appionment.php" method="POST">
+                           <button type="submit"  name="doc" class="btn btn-primary py-3 px-5 me-3" value="<?php echo $email; ?>">Get Appointment</button>
+                       </form>';
+
                     </div>
                 </div>
             </div>

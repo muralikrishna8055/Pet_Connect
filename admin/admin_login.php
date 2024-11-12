@@ -1,5 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<?php
+include('db_con.php');
+session_start();
+
+// Check if form is submitted
+if (isset($_POST['login'])) {
+    // Fetch form data
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Sanitize user input to prevent SQL injection
+    $username = mysqli_real_escape_string($connection, $username);
+    $password = mysqli_real_escape_string($connection, $password);
+
+    // SQL query to check admin credentials
+    $sql = "SELECT * FROM admin WHERE username = '$username' AND password = '$password'";
+    $result = mysqli_query($connection, $sql);
+
+    // Check if query execution was successful
+    if (!$result) {
+        die("Database query failed: " . mysqli_error($connection));
+    }
+
+    // If admin credentials match
+    if (mysqli_num_rows($result) == 1) {
+        $_SESSION['admin'] = $username; // Set admin session
+        echo "<script>alert('Login successful');</script>";
+        echo "<script>location.replace('index.php');</script>"; // Redirect to admin dashboard
+    } else {
+        // If login failed
+        echo "<script>alert('Invalid username or password');</script>";
+        echo "<script>location.replace('admin_login.php');</script>";
+    }
+}
+?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +85,7 @@
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
                   <img src="assets/img/logo.png" alt="">
-                  <span class="d-none d-lg-block">NiceAdmin</span>
+                  <span class="d-none d-lg-block">Admin</span>
                 </a>
               </div><!-- End Logo -->
 
@@ -61,36 +98,33 @@
                     <p class="text-center small">Enter your username & password to login</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form class="row g-3 needs-validation" action="" method="POST" novalidate>
+    <div class="col-12">
+        <label for="yourUsername" class="form-label">Username</label>
+        <div class="input-group has-validation">
+            <span class="input-group-text" id="inputGroupPrepend">@</span>
+            <input type="text" name="username" class="form-control" id="yourUsername" required>
+            <div class="invalid-feedback">Please enter your username.</div>
+        </div>
+    </div>
 
-                    <div class="col-12">
-                      <label for="yourUsername" class="form-label">Username</label>
-                      <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
-                        <div class="invalid-feedback">Please enter your username.</div>
-                      </div>
-                    </div>
+    <div class="col-12">
+        <label for="yourPassword" class="form-label">Password</label>
+        <input type="password" minlength="8" name="password" class="form-control" id="yourPassword" required>
+        <div class="invalid-feedback">Please enter your password!</div>
+    </div>
 
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
-                    </div>
+    <div class="col-12">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">Remember me</label>
+        </div>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary w-100" type="submit" name="login">Login</button>
+    </div>
+</form>
 
-                    <div class="col-12">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Remember me</label>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
-                    </div>
-                    <div class="col-12">
-                      <p class="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>
-                    </div>
-                  </form>
 
                 </div>
               </div>

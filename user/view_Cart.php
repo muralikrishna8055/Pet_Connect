@@ -86,7 +86,7 @@ $connection->close();
 
   </header><!-- End Header -->
 
-   <!-- ======= Sidebar ======= -->
+    <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
 <ul class="sidebar-nav" id="sidebar-nav">
@@ -158,9 +158,32 @@ $connection->close();
       </li>
     </ul>
   </li>
+  
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="view_appoinment.php">
+      <i class="bi bi-person"></i>
+      <span>Appoinments</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="users-profile.php">
+      <i class="bi bi-person"></i>
+      <span>Profile</span>
+    </a>
+  </li><!-- End Profile Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="pages-faq.php">
+      <i class="bi bi-question-circle"></i>
+      <span>F.A.Q</span>
+    </a>
+  </li><!-- End F.A.Q Page Nav -->
+
 </ul>
 
 </aside><!-- End Sidebar -->
+
 
   <main id="main" class="main">
 

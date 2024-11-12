@@ -56,7 +56,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="dropdown-menu m-0">
                         <a href="faq.php" class="dropdown-item">Frequently asked questions</a>
                         <a href="resources.php" class="dropdown-item">Resources</a>
-                        <a href="blog.php" class="dropdown-item">Blog</a>
+                       
                         <a href="terms.php" class="dropdown-item">Terms and Conditions</a>
                     </div>
                 </div>
@@ -77,24 +77,24 @@ if (session_status() === PHP_SESSION_NONE) {
 <!-- Carousel Start -->
 <div id="videoCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
+        <!-- First Video Thumbnail -->
         <div class="carousel-item active">
-            <video class="d-block w-100" controls>
-                <source src="https://youtu.be/S1nUMsPC1-0?feature=shared" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <a href="https://youtu.be/S1nUMsPC1-0" target="_blank">
+                <img src="https://img.youtube.com/vi/S1nUMsPC1-0/hqdefault.jpg" class="d-block w-100" alt="Video 1 Thumbnail">
+            </a>
         </div>
-        <div class="carousel-item">
-            <video class="d-block w-100" controls>
-                <source src="https://youtu.be/ikrr9wPH88s?feature=shared" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+        <div class="carousel-item active">
+            <a href="https://youtu.be/ikrr9wPH88s?feature=shared" target="_blank">
+                <img src="https://img.youtube.com/vi/ikrr9wPH88s/hqdefault.jpg" class="d-block w-100" alt="Video 1 Thumbnail">
+            </a>
         </div>
-        <div class="carousel-item">
-            <video class="d-block w-100" controls>
-                <source src="https://youtu.be/T7oGgq6md00?feature=shared" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+        <div class="carousel-item active">
+            <a href="https://youtu.be/T7oGgq6md00?feature=shared" target="_blank">
+                <img src="https://img.youtube.com/vi/T7oGgq6md00/hqdefault.jpg" class="d-block w-100" alt="Video 1 Thumbnail">
+            </a>
         </div>
+
+       
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>

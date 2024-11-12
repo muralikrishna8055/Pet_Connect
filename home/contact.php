@@ -1,6 +1,29 @@
 <?php
+include('db_con.php'); 
 if (session_status() === PHP_SESSION_NONE) {
     session_start(); // Start the session if not already started
+}
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get form data and sanitize it
+    $email = $connection->real_escape_string($_POST['email']);
+    $subject = $connection->real_escape_string($_POST['subject']);
+    $message = $connection->real_escape_string($_POST['message']);
+
+    // Insert data into messages table
+    $sql = "INSERT INTO user_messages ( email, subject, message) VALUES ( '$email', '$subject', '$message')";
+
+    if ($connection->query($sql) === TRUE) {
+        echo '<script>alert("Messages sent successfully!");</script>';
+        echo '<script>location.replace("contact.php");</script>'; // Redirect
+    } else {
+        echo "Error: " . $sql . "<br>" . $connection->error;
+    }
+
+    $connection->close();
 }
 ?>
 
@@ -60,7 +83,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="dropdown-menu m-0">
                        <a href="faq.php" class="dropdown-item">Frequently asked questions</a>
                         <a href="resources.php" class="dropdown-item">Resources</a>
-                        <a href="blog.php" class="dropdown-item">Blog</a>
+                     
                         <a href="terms.php" class="dropdown-item">Terms and Conditions</a>
                     </div>
                 </div>
@@ -88,25 +111,34 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
             <div class="row g-5">
                 <div class="col-lg-7">
-                    <form action="submit_contact.php" method="post"> <!-- Update action to your backend script -->
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <input type="text" name="name" class="form-control bg-light border-0 px-4" placeholder="Your Name" required style="height: 55px;">
-                            </div>
-                            <div class="col-12">
-                                <input type="email" name="email" class="form-control bg-light border-0 px-4" placeholder="Your Email" required style="height: 55px;">
-                            </div>
-                            <div class="col-12">
-                                <input type="text" name="subject" class="form-control bg-light border-0 px-4" placeholder="Subject" required style="height: 55px;">
-                            </div>
-                            <div class="col-12">
-                                <textarea name="message" class="form-control bg-light border-0 px-4 py-3" rows="8" placeholder="Message" required></textarea>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
-                            </div>
-                        </div>
-                    </form>
+     <?php              // Check if user session is set
+         if (isset($_SESSION['usr'])):
+    ?>
+
+        <form action="" method="post"> <!-- Replace with your backend script -->
+           <div class="row g-3">
+              <input type="hidden" name="email" value="<?php echo $_SESSION['usr']; ?>" style="height: 55px;">
+        
+           <div class="col-12">
+             <input type="text" name="subject" class="form-control bg-light border-0 px-4" placeholder="Subject" required style="height: 55px;">
+           </div>
+        
+           <div class="col-12">
+            <textarea name="message" class="form-control bg-light border-0 px-4 py-3" rows="8" placeholder="Message" required></textarea>
+          </div>
+        
+          <div class="col-12">
+            <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+         </div>
+       </div>
+   </form>
+
+ <?php
+else:
+    echo "<p><h2>Please log in to send a message.</h2></p>";
+endif;
+
+?>
                 </div>
                 <div class="col-lg-5">
                     <div class="bg-light mb-5 p-5">
@@ -114,7 +146,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             <i class="bi bi-geo-alt text-primary fs-1 me-3"></i>
                             <div class="text-start">
                                 <h6 class="text-uppercase mb-1">Our Office</h6>
-                                <span>456 Pet Lane, Animal City, USA</span>
+                                <span>456 Pet Lane, Animal City, Kochi</span>
                             </div>
                         </div>
                         <div class="d-flex align-items-center mb-2">
@@ -128,15 +160,10 @@ if (session_status() === PHP_SESSION_NONE) {
                             <i class="bi bi-phone-vibrate text-primary fs-1 me-3"></i>
                             <div class="text-start">
                                 <h6 class="text-uppercase mb-1">Call Us</h6>
-                                <span>+123 456 7890</span>
+                                <span>+91 43 456 7890</span>
                             </div>
                         </div>
-                        <div>
-                            <iframe class="position-relative w-100"
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.913672998197!2d-74.00601508459519!3d40.71277597933015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316ce6b9df%3A0x4bfa72b49e06c0ed!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1603794290143!5m2!1sen!2sin"
-                                frameborder="0" style="height: 205px; border:0;" allowfullscreen="" aria-hidden="false"
-                                tabindex="0"></iframe>
-                        </div>
+                       
                     </div>
                 </div>
             </div>

@@ -201,6 +201,13 @@
           </li>
         </ul>
       </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="view_appoinment.php">
+          <i class="bi bi-person"></i>
+          <span>Appoinments</span>
+        </a>
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="users-profile.php">

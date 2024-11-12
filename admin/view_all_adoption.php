@@ -1,15 +1,16 @@
 <?php
 session_start();
-include('db_con.php');
-
-// Check if the user is logged in
-if (!isset($_SESSION['usr'])) {
-    echo '<script>location.replace("../home/index.php");</script>'; // Redirect to login page
-    exit();
+if (!isset($_SESSION['admin'])) {
+    echo "<script>alert('Please log in as admin to access this page.');</script>";
+    echo "<script>location.replace('admin_login.php');</script>";
+    exit;
 }
+?>
 
-// Get the user ID from the session
-$user_id = $_SESSION['usr'];
+
+<?php
+session_start();
+include('db_con.php');
 
 // Query to fetch missing pets with `stat = 1`
 $sql = "SELECT id, pet_image, pet_name, description, breed,age,contact_number FROM pets_for_adoption WHERE stat = '2'";
@@ -78,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">PetConnect Admin</span>
+        <span class="d-none d-lg-block">Admin</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -88,144 +89,141 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </header><!-- End Header -->
 
    
-<!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
 
-<ul class="sidebar-nav" id="sidebar-nav">
+    <ul class="sidebar-nav" id="sidebar-nav">
 
-  <li class="nav-item">
-    <a class="nav-link " href="index.php">
-      <i class="bi bi-grid"></i>
-      <span>Dashboard</span>
-    </a>
-  </li><!-- End Dashboard Nav -->
-
-
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="add_product.php">
-          <i class="bi bi-circle"></i><span>Addproduct</span>
+      <li class="nav-item">
+        <a class="nav-link " href="index.php">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
         </a>
-      </li>                        
-     
-      <li>
-        <a href="view_product.php">
-          <i class="bi bi-circle"></i><span>ViewProduct</span>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="view_msg.php">
+          <i class="bi bi-person"></i>
+          <span>Contact msgs</span>
         </a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="add_product.php">
+              <i class="bi bi-circle"></i><span>Addproduct</span>
+            </a>
+          </li>                        
+         
+          <li>
+            <a href="view_product.php">
+              <i class="bi bi-circle"></i><span>ViewProduct</span>
+            </a>
+          </li>
+        
+        </ul>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Vetinarys</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="add_hosp.php">
+              <i class="bi bi-circle"></i><span>Add Hospial</span>
+            </a>
+          </li>                        
+         
+          <li>
+            <a href="view_hosp.php">
+              <i class="bi bi-circle"></i><span>View Hospital</span>
+            </a>
+          </li>
+        
+        </ul>
+      </li> 
     
-    </ul>
-  </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Doctors</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="view_doc.php">
+              <i class="bi bi-circle"></i><span>Approve Doctors</span>
+            </a>
+          </li>                        
+         
+          <li>
+            <a href="view_all_doc.php">
+              <i class="bi bi-circle"></i><span>View Doctors</span>
+            </a>
+          </li>
+        
+        </ul>
+      </li>
+ 
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Adoption</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="approve_adoption.php">
+              <i class="bi bi-circle"></i><span>Approve Adoption</span>
+            </a>
+          </li>                        
+         
+          <li>
+            <a href="view_all_adoption.php">
+              <i class="bi bi-circle"></i><span>View Adoptions</span>
+            </a>
+          </li>
+        
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Missing</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="approve_miss.php">
+              <i class="bi bi-circle"></i><span>Approve Missing</span>
+            </a>
+          </li>                        
+         
+          <li>
+            <a href="view_missingPets.php">
+              <i class="bi bi-circle"></i><span>View Missing</span>
+            </a>
+          </li>
+        
+        </ul>
+      </li>
   
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>Vetinarys</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="add_hosp.php">
-          <i class="bi bi-circle"></i><span>Add Hospial</span>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="">
+          <i class="bi bi-menu-button-wide"></i><span>Orders</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-      </li>                        
-     
-      <li>
-        <a href="view_hosp.php">
-          <i class="bi bi-circle"></i><span>View Hospital</span>
-        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="oder.php">
+              <i class="bi bi-circle"></i><span>Orders</span>
+            </a>
+          </li>                        
+        </ul>
       </li>
-    
-    </ul>
-  </li> 
-  
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>Doctors</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="view_doc.php">
-          <i class="bi bi-circle"></i><span>Approve Doctors</span>
-        </a>
-      </li>                        
-     
-      <li>
-        <a href="view_all_doc.php">
-          <i class="bi bi-circle"></i><span>View Doctors</span>
-        </a>
-      </li>
-    
-    </ul>
-  </li>
 
-    
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>Adoption</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="approve_adoption.php">
-          <i class="bi bi-circle"></i><span>Approve Adoption</span>
-        </a>
-      </li>                        
-     
-      <li>
-        <a href="view_all_adoption.php">
-          <i class="bi bi-circle"></i><span>View Adoptions</span>
-        </a>
-      </li>
-    
     </ul>
-  </li>
 
-    
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>Missing</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="approve_miss.php">
-          <i class="bi bi-circle"></i><span>Approve Missing</span>
-        </a>
-      </li>                        
-     
-      <li>
-        <a href="view_missingPets.php">
-          <i class="bi bi-circle"></i><span>View Missing</span>
-        </a>
-      </li>
-    
-    </ul>
-  </li>
-
-    
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-menu-button-wide"></i><span>Orders</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="">
-          <i class="bi bi-circle"></i><span>Orders</span>
-        </a>
-      </li>                        
-     
-      <li>
-        <a href="">
-          <i class="bi bi-circle"></i><span>Shipped Orders</span>
-        </a>
-      </li>
-    
-    </ul>
-  </li>
-</aside><!-- End Sidebar -->
-
+  </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
 

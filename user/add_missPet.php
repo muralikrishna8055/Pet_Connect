@@ -132,8 +132,8 @@ if (isset($_POST['submit'])) {
 
 </header><!-- End Header -->
 
-<!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
+ <!-- ======= Sidebar ======= -->
+ <aside id="sidebar" class="sidebar">
 
 <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -204,9 +204,32 @@ if (isset($_POST['submit'])) {
       </li>
     </ul>
   </li>
+  
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="view_appoinment.php">
+      <i class="bi bi-person"></i>
+      <span>Appoinments</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="users-profile.php">
+      <i class="bi bi-person"></i>
+      <span>Profile</span>
+    </a>
+  </li><!-- End Profile Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="pages-faq.php">
+      <i class="bi bi-question-circle"></i>
+      <span>F.A.Q</span>
+    </a>
+  </li><!-- End F.A.Q Page Nav -->
+
 </ul>
 
 </aside><!-- End Sidebar -->
+
 
     <!-- Header and Sidebar remain the same -->
 
@@ -248,7 +271,7 @@ if (isset($_POST['submit'])) {
                                 <div class="row mb-3">
                                     <label class="col-sm-2 col-form-label">Contact Number<span class="text-danger">*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="contact_number" placeholder="Enter contact number" required>
+                                        <input type="tel" pattern="[0-9]{10}"class="form-control" name="contact_number" placeholder="Enter contact number" required>
                                     </div>
                                 </div>
 

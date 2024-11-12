@@ -1,7 +1,8 @@
 <?php
 session_start(); // Start the session
 include('db_con.php'); // Include the database connection
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // Check if the user is logged in
 if (!isset($_SESSION['usr'])) {
     echo '<script>location.replace("index.php");</script>'; // Redirect to login page
@@ -10,15 +11,17 @@ if (!isset($_SESSION['usr'])) {
 
 // Get the user ID from the session
 $user_id = $_SESSION['usr'];
-session_start(); // Start the session
 
+// Prepare the SQL statement to prevent SQL injection
+$sql = "SELECT doctor_id,appointment_date,appointment_time ,status FROM appointments WHERE user_id = ?";
+$stmt = $connection->prepare($sql);
+$stmt->bind_param("s", $user_id);
+$stmt->execute();
+$product_result = $stmt->get_result();
 
-
-
-
-// Query to fetch financial advisors
-$sql = "SELECT id, pet_image, pet_name, breed,age,description,contact_number,stat FROM pets_for_adoption WHERE uid = '$user_id'";
-$result = $connection->query($sql);
+// Close the statement and connection
+$stmt->close();
+$connection->close();
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +31,7 @@ $result = $connection->query($sql);
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>PetConnect | View Products</title>
+  <title>PetConnect </title>
   <meta content="View, update, and delete products in PetConnect's inventory." name="description">
   <meta content="PetConnect, Admin, View Products, Dashboard" name="keywords">
 
@@ -61,7 +64,7 @@ $result = $connection->query($sql);
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">PetConnect Admin</span>
+        <span class="d-none d-lg-block">PetConnect </span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -69,8 +72,9 @@ $result = $connection->query($sql);
     <!-- Existing Header Content (Search Bar, Notifications, Messages, Profile) -->
 
   </header><!-- End Header -->
- <!-- ======= Sidebar ======= -->
- <aside id="sidebar" class="sidebar">
+
+    <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
 
 <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -168,16 +172,15 @@ $result = $connection->query($sql);
 </aside><!-- End Sidebar -->
 
 
-
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>View Adoption</h1>
+      <h1>View Order</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Adoption</li>
-          <li class="breadcrumb-item active">View Adoption</li>
+          <li class="breadcrumb-item">Appoinments</li>
+          <li class="breadcrumb-item active">View Appoinments</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -188,44 +191,35 @@ $result = $connection->query($sql);
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">ADOPTIONS</h5>
+              <h5 class="card-title">order</h5>
 
               <!-- Products Table -->
               <table class="table table-striped ">
                 <thead>
-                  <tr>
-                    <th scope="col">Pet Image</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Breed</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Contact</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
+                <tr>
+                    <th scope="col">Doctor Email</th>
+                    <th scope="col">Appoinment Date</th>
+                    <th scope="col">Appoinment Time</th>
+                    <th scope="col">Status</th>
+
+                   <!-- <th scope="col">Product ID</th>-->
                   </tr>
                 </thead>
                 <tbody>
                   <?php
-                  if ($result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
+                  if ($product_result->num_rows > 0) {
+                      while ($product = $product_result->fetch_assoc()) {
                           echo '<tr>';
-                          echo '    <td><img src="uploads/product/' . htmlspecialchars($row["pet_image"]) . '" alt="' . htmlspecialchars($row["name"]) . '" class="img-thumbnail" style="width: 100px;"></td>';
-                          echo '    <td>' . htmlspecialchars($row["pet_name"]) . '</td>';
-                          echo '    <td>' . htmlspecialchars($row["breed"]) . '</td>';
-                          echo '    <td>' . htmlspecialchars($row["age"]) . '</td>';
-                          echo '    <td>' . htmlspecialchars($row["description"]) . '</td>';
-                          echo '    <td>' . htmlspecialchars($row["contact_number"]) . '</td>';
-                          echo '  <td>                                  
-                                    
-                                    <form action="del_adopt.php" method="POST">
-                                       <button type="submit"   name="id" class="btn btn-sm btn-danger" value="' . htmlspecialchars($row['id']) . '"><i class="bi bi-trash"></i> Delete</button>
-                                    </form> 
-
-                                  </td>'; 
-
+                          echo '    <td>' . htmlspecialchars($product["doctor_id"]) . '</td>';
+                          echo '    <td>' . htmlspecialchars($product["appointment_date"]) . '</td>';
+                          echo '    <td>' . $product["appointment_time"] . '</td>';
+                          echo '    <td>' . htmlspecialchars($product["status"]) . '</td>';
+                          
+                        //  echo '    <td>' . htmlspecialchars($product["product_id"]) . '</td>';
                           echo '</tr>';
                       }
                   } else {
-                      echo '<tr><td colspan="6" class="text-center">No Adoption Post found.</td></tr>';
+                      echo '<tr><td colspan="5" class="text-center">Your Order is Empty</td></tr>';
                   }
                   ?>
                 </tbody>
@@ -268,3 +262,7 @@ $result = $connection->query($sql);
 </body>
 
 </html>
+
+
+
+

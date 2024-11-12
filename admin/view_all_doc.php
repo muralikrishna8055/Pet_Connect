@@ -1,4 +1,15 @@
 <?php
+session_start();
+if (!isset($_SESSION['admin'])) {
+    echo "<script>alert('Please log in as admin to access this page.');</script>";
+    echo "<script>location.replace('admin_login.php');</script>";
+    exit;
+}
+?>
+
+
+
+<?php
 include('db_con.php'); 
 
 // Query to fetch doctors
@@ -51,14 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">PetConnect Admin</span>
+        <span class="d-none d-lg-block">Admin</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
   </header>
 
    
-   <!-- ======= Sidebar ======= -->
+    <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
 <ul class="sidebar-nav" id="sidebar-nav">
@@ -70,7 +81,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </a>
   </li><!-- End Dashboard Nav -->
 
-
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="view_msg.php">
+      <i class="bi bi-person"></i>
+      <span>Contact msgs</span>
+    </a>
+  </li>
 
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -111,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     </ul>
   </li> 
-  
+
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-menu-button-wide"></i><span>Doctors</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -132,7 +148,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </ul>
   </li>
 
-    
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-menu-button-wide"></i><span>Adoption</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -153,7 +168,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </ul>
   </li>
 
-    
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-menu-button-wide"></i><span>Missing</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -174,28 +188,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </ul>
   </li>
 
-    
   <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="">
       <i class="bi bi-menu-button-wide"></i><span>Orders</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
       <li>
-        <a href="">
+        <a href="oder.php">
           <i class="bi bi-circle"></i><span>Orders</span>
         </a>
       </li>                        
-     
-      <li>
-        <a href="">
-          <i class="bi bi-circle"></i><span>Shipped Orders</span>
-        </a>
-      </li>
-    
     </ul>
   </li>
-      
-    </aside><!-- End Sidebar -->
+
+</ul>
+
+</aside><!-- End Sidebar-->
 
   <main id="main" class="main">
     <div class="pagetitle">

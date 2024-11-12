@@ -59,7 +59,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="dropdown-menu m-0">
                         <a href="faq.php" class="dropdown-item">Frequently asked questions</a>
                         <a href="resources.php" class="dropdown-item">Resources</a>
-                        <a href="blog.php" class="dropdown-item">Blog</a>
+                      
                         <a href="terms.php" class="dropdown-item">Terms and Conditions</a>
                     </div>
                 </div>

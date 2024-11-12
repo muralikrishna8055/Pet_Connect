@@ -1,3 +1,12 @@
+<?php
+session_start();
+ if (!isset($_SESSION['doctor_id'])) {
+  echo "<script>alert('Login First');</script>";
+  echo "<script>location.replace('login.php');</script>";
+  die();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -116,7 +125,7 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="usr_logout.php">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -149,17 +158,11 @@
     </a>
     <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
       <li>
-        <a href="">VIEW APPOINMENTS
+        <a href="view_appoin.php">VIEW APPOINMENTS
           <i class="bi bi-circle"></i><span></span>
         </a>
       </li>                        
      
-      <li>
-        <a href="">
-          <i class="bi bi-circle"></i><span>CHECK APPOINMENTS</span>
-        </a>
-      </li>
-    
     </ul>
   </li>
   
